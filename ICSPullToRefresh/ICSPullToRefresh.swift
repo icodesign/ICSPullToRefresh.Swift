@@ -33,7 +33,7 @@ public extension UIScrollView{
         return pullToRefreshView != nil ? pullToRefreshView!.hidden : false
     }
     
-    public func addPullToFreshHandler(actionHandler: ActionHandler){
+    public func addPullToRefreshHandler(actionHandler: ActionHandler){
         if pullToRefreshView == nil {
             pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -ICSPullToRefreshViewHeight, width: self.bounds.width, height: ICSPullToRefreshViewHeight))
             addSubview(pullToRefreshView!)

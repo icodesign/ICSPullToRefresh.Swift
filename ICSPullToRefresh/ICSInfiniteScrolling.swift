@@ -32,7 +32,7 @@ public extension UIScrollView{
         return infiniteScrollingView != nil ? infiniteScrollingView!.hidden : false
     }
     
-    public func addInfiniteScrollingWithActionHandler(actionHandler: ActionHandler){
+    public func addInfiniteScrollingWithHandler(actionHandler: ActionHandler){
         if infiniteScrollingView == nil {
             infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
             addSubview(infiniteScrollingView!)

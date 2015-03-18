@@ -8,14 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		9B27814D1AB592FA00769BE5 /* ICSPullToRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B27814C1AB592FA00769BE5 /* ICSPullToRefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B2781531AB592FA00769BE5 /* ICSPullToRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */; };
-		9B27815A1AB592FA00769BE5 /* ICSPullToRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2781591AB592FA00769BE5 /* ICSPullToRefreshTests.swift */; };
 		9B27816C1AB5933E00769BE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27816B1AB5933E00769BE5 /* AppDelegate.swift */; };
 		9B27816E1AB5933E00769BE5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27816D1AB5933E00769BE5 /* ViewController.swift */; };
 		9B2781711AB5933E00769BE5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B27816F1AB5933E00769BE5 /* Main.storyboard */; };
 		9B2781731AB5933E00769BE5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2781721AB5933E00769BE5 /* Images.xcassets */; };
 		9B2781761AB5933E00769BE5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B2781741AB5933E00769BE5 /* LaunchScreen.xib */; };
-		9B2781821AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2781811AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift */; };
 		9B27818E1AB5ECDE00769BE5 /* ICSPullToRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */; };
 		9B27818F1AB5ECDE00769BE5 /* ICSPullToRefresh.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9BE5F33B1AB8563100C150B0 /* ICSInfiniteScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE5F33A1AB8563100C150B0 /* ICSInfiniteScrolling.swift */; };
@@ -23,20 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9B2781541AB592FA00769BE5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9B27813E1AB592FA00769BE5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9B2781461AB592FA00769BE5;
-			remoteInfo = ICSPullToRefresh;
-		};
-		9B27817C1AB5933E00769BE5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9B27813E1AB592FA00769BE5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9B2781661AB5933E00769BE5;
-			remoteInfo = ICSPullToRefreshDemo;
-		};
 		9B2781891AB5934600769BE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9B27813E1AB592FA00769BE5 /* Project object */;
@@ -64,9 +47,6 @@
 		9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ICSPullToRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B27814B1AB592FA00769BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B27814C1AB592FA00769BE5 /* ICSPullToRefresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICSPullToRefresh.h; sourceTree = "<group>"; };
-		9B2781521AB592FA00769BE5 /* ICSPullToRefreshTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ICSPullToRefreshTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B2781581AB592FA00769BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9B2781591AB592FA00769BE5 /* ICSPullToRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSPullToRefreshTests.swift; sourceTree = "<group>"; };
 		9B2781671AB5933E00769BE5 /* ICSPullToRefreshDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ICSPullToRefreshDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B27816A1AB5933E00769BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B27816B1AB5933E00769BE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,9 +54,6 @@
 		9B2781701AB5933E00769BE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9B2781721AB5933E00769BE5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9B2781751AB5933E00769BE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		9B27817B1AB5933E00769BE5 /* ICSPullToRefreshDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ICSPullToRefreshDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B2781801AB5933E00769BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9B2781811AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSPullToRefreshDemoTests.swift; sourceTree = "<group>"; };
 		9BE5F33A1AB8563100C150B0 /* ICSInfiniteScrolling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICSInfiniteScrolling.swift; sourceTree = "<group>"; };
 		9BE5F33C1AB8699100C150B0 /* ICSPullToRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICSPullToRefresh.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,26 +66,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9B27814F1AB592FA00769BE5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9B2781531AB592FA00769BE5 /* ICSPullToRefresh.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9B2781641AB5933E00769BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9B27818E1AB5ECDE00769BE5 /* ICSPullToRefresh.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9B2781781AB5933E00769BE5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,9 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				9B2781491AB592FA00769BE5 /* ICSPullToRefresh */,
-				9B2781561AB592FA00769BE5 /* ICSPullToRefreshTests */,
 				9B2781681AB5933E00769BE5 /* ICSPullToRefreshDemo */,
-				9B27817E1AB5933E00769BE5 /* ICSPullToRefreshDemoTests */,
 				9B2781481AB592FA00769BE5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,9 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */,
-				9B2781521AB592FA00769BE5 /* ICSPullToRefreshTests.xctest */,
 				9B2781671AB5933E00769BE5 /* ICSPullToRefreshDemo.app */,
-				9B27817B1AB5933E00769BE5 /* ICSPullToRefreshDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,23 +114,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9B2781561AB592FA00769BE5 /* ICSPullToRefreshTests */ = {
-			isa = PBXGroup;
-			children = (
-				9B2781591AB592FA00769BE5 /* ICSPullToRefreshTests.swift */,
-				9B2781571AB592FA00769BE5 /* Supporting Files */,
-			);
-			path = ICSPullToRefreshTests;
-			sourceTree = "<group>";
-		};
-		9B2781571AB592FA00769BE5 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				9B2781581AB592FA00769BE5 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		9B2781681AB5933E00769BE5 /* ICSPullToRefreshDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,23 +131,6 @@
 			isa = PBXGroup;
 			children = (
 				9B27816A1AB5933E00769BE5 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		9B27817E1AB5933E00769BE5 /* ICSPullToRefreshDemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				9B2781811AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift */,
-				9B27817F1AB5933E00769BE5 /* Supporting Files */,
-			);
-			path = ICSPullToRefreshDemoTests;
-			sourceTree = "<group>";
-		};
-		9B27817F1AB5933E00769BE5 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				9B2781801AB5933E00769BE5 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -243,24 +167,6 @@
 			productReference = 9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		9B2781511AB592FA00769BE5 /* ICSPullToRefreshTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9B2781601AB592FA00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshTests" */;
-			buildPhases = (
-				9B27814E1AB592FA00769BE5 /* Sources */,
-				9B27814F1AB592FA00769BE5 /* Frameworks */,
-				9B2781501AB592FA00769BE5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9B2781551AB592FA00769BE5 /* PBXTargetDependency */,
-			);
-			name = ICSPullToRefreshTests;
-			productName = ICSPullToRefreshTests;
-			productReference = 9B2781521AB592FA00769BE5 /* ICSPullToRefreshTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		9B2781661AB5933E00769BE5 /* ICSPullToRefreshDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9B2781831AB5933E00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshDemo" */;
@@ -280,24 +186,6 @@
 			productReference = 9B2781671AB5933E00769BE5 /* ICSPullToRefreshDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9B27817A1AB5933E00769BE5 /* ICSPullToRefreshDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9B2781861AB5933E00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshDemoTests" */;
-			buildPhases = (
-				9B2781771AB5933E00769BE5 /* Sources */,
-				9B2781781AB5933E00769BE5 /* Frameworks */,
-				9B2781791AB5933E00769BE5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9B27817D1AB5933E00769BE5 /* PBXTargetDependency */,
-			);
-			name = ICSPullToRefreshDemoTests;
-			productName = ICSPullToRefreshDemoTests;
-			productReference = 9B27817B1AB5933E00769BE5 /* ICSPullToRefreshDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -310,15 +198,8 @@
 					9B2781461AB592FA00769BE5 = {
 						CreatedOnToolsVersion = 6.3;
 					};
-					9B2781511AB592FA00769BE5 = {
-						CreatedOnToolsVersion = 6.3;
-					};
 					9B2781661AB5933E00769BE5 = {
 						CreatedOnToolsVersion = 6.3;
-					};
-					9B27817A1AB5933E00769BE5 = {
-						CreatedOnToolsVersion = 6.3;
-						TestTargetID = 9B2781661AB5933E00769BE5;
 					};
 				};
 			};
@@ -336,22 +217,13 @@
 			projectRoot = "";
 			targets = (
 				9B2781461AB592FA00769BE5 /* ICSPullToRefresh */,
-				9B2781511AB592FA00769BE5 /* ICSPullToRefreshTests */,
 				9B2781661AB5933E00769BE5 /* ICSPullToRefreshDemo */,
-				9B27817A1AB5933E00769BE5 /* ICSPullToRefreshDemoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9B2781451AB592FA00769BE5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9B2781501AB592FA00769BE5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -368,13 +240,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9B2781791AB5933E00769BE5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -387,14 +252,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9B27814E1AB592FA00769BE5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9B27815A1AB592FA00769BE5 /* ICSPullToRefreshTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9B2781631AB5933E00769BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -404,27 +261,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9B2781771AB5933E00769BE5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9B2781821AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9B2781551AB592FA00769BE5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9B2781461AB592FA00769BE5 /* ICSPullToRefresh */;
-			targetProxy = 9B2781541AB592FA00769BE5 /* PBXContainerItemProxy */;
-		};
-		9B27817D1AB5933E00769BE5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9B2781661AB5933E00769BE5 /* ICSPullToRefreshDemo */;
-			targetProxy = 9B27817C1AB5933E00769BE5 /* PBXContainerItemProxy */;
-		};
 		9B27818A1AB5934600769BE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9B2781461AB592FA00769BE5 /* ICSPullToRefresh */;
@@ -576,36 +415,6 @@
 			};
 			name = Release;
 		};
-		9B2781611AB592FA00769BE5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = ICSPullToRefreshTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		9B2781621AB592FA00769BE5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = ICSPullToRefreshTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		9B2781841AB5933E00769BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -634,40 +443,6 @@
 			};
 			name = Release;
 		};
-		9B2781871AB5933E00769BE5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = ICSPullToRefreshDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ICSPullToRefreshDemo.app/ICSPullToRefreshDemo";
-			};
-			name = Debug;
-		};
-		9B2781881AB5933E00769BE5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = ICSPullToRefreshDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ICSPullToRefreshDemo.app/ICSPullToRefreshDemo";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -689,29 +464,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9B2781601AB592FA00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9B2781611AB592FA00769BE5 /* Debug */,
-				9B2781621AB592FA00769BE5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		9B2781831AB5933E00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9B2781841AB5933E00769BE5 /* Debug */,
 				9B2781851AB5933E00769BE5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9B2781861AB5933E00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9B2781871AB5933E00769BE5 /* Debug */,
-				9B2781881AB5933E00769BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

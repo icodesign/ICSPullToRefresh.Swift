@@ -27,7 +27,7 @@ class ViewController: UITableViewController, UITableViewDataSource {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.addPullToFreshHandler {
+        tableView.addPullToRefreshHandler {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 sleep(3)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -39,7 +39,7 @@ class ViewController: UITableViewController, UITableViewDataSource {
             self.tableView.triggerPullToRefresh()
         }
         
-        tableView.addInfiniteScrollingWithActionHandler {
+        tableView.addInfiniteScrollingWithHandler {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 sleep(3)
                 dispatch_async(dispatch_get_main_queue(), { [unowned self] in
