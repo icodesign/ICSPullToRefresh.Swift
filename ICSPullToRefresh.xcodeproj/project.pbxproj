@@ -140,8 +140,8 @@
 		9B2781491AB592FA00769BE5 /* ICSPullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
-				9BE5F33C1AB8699100C150B0 /* ICSPullToRefresh.swift */,
 				9B27814C1AB592FA00769BE5 /* ICSPullToRefresh.h */,
+				9BE5F33C1AB8699100C150B0 /* ICSPullToRefresh.swift */,
 				9BE5F33A1AB8563100C150B0 /* ICSInfiniteScrolling.swift */,
 				9B27814A1AB592FA00769BE5 /* Supporting Files */,
 			);

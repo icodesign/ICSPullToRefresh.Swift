@@ -54,26 +54,26 @@ public extension UIScrollView{
         }
         pullToRefreshView!.hidden = !showsToPullToRefresh
         if showsToPullToRefresh{
-            if !pullToRefreshView!.isObserving{
-                addPullToRefreshObservers()
-            }
+            addPullToRefreshObservers()
         }else{
-            if pullToRefreshView!.isObserving{
-                removePullToRefreshObservers()
-            }
+            removePullToRefreshObservers()
         }
     }
     
     func addPullToRefreshObservers() {
-        addObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
-        addObserver(pullToRefreshView!, forKeyPath: observeKeyFrame, options:.New, context: nil)
-        pullToRefreshView!.isObserving = true
+        if pullToRefreshView?.isObserving != nil && !pullToRefreshView!.isObserving{
+            addObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
+            addObserver(pullToRefreshView!, forKeyPath: observeKeyFrame, options:.New, context: nil)
+            pullToRefreshView!.isObserving = true
+        }
     }
     
     func removePullToRefreshObservers() {
-        removeObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset)
-        removeObserver(pullToRefreshView!, forKeyPath: observeKeyFrame)
-        pullToRefreshView!.isObserving = false
+        if pullToRefreshView?.isObserving != nil && pullToRefreshView!.isObserving{
+            removeObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset)
+            removeObserver(pullToRefreshView!, forKeyPath: observeKeyFrame)
+            pullToRefreshView!.isObserving = false
+        }
     }
 
     
@@ -208,10 +208,8 @@ public class PullToRefreshView: UIView {
     
     public override func willMoveToSuperview(newSuperview: UIView?) {
         if superview != nil && newSuperview == nil {
-            if let isShow = scrollView?.showsPullToRefresh {
-                if isObserving {
-                    scrollView?.removePullToRefreshObservers()
-                }
+            if scrollView?.showsPullToRefresh != nil && scrollView!.showsPullToRefresh{
+                scrollView?.removePullToRefreshObservers()
             }
         }
     }

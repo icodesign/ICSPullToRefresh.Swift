@@ -54,7 +54,7 @@ class ViewController: UITableViewController, UITableViewDataSource {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20 + 10 * k
+        return 10 + 4 * k
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

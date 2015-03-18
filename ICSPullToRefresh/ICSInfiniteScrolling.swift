@@ -53,28 +53,28 @@ public extension UIScrollView{
         }
         infiniteScrollingView!.hidden = !showsInfiniteScrolling
         if showsInfiniteScrolling{
-            if !infiniteScrollingView!.isObserving{
-                addInfiniteScrollingViewObservers()
-            }
+            addInfiniteScrollingViewObservers()
         }else{
-            if infiniteScrollingView!.isObserving{
-                removeInfiniteScrollingViewObservers()
-            }
+            removeInfiniteScrollingViewObservers()
             infiniteScrollingView!.setNeedsLayout()
             infiniteScrollingView!.frame = CGRect(x: CGFloat(0), y: contentSize.height, width: infiniteScrollingView!.bounds.width, height: ICSInfiniteScrollingViewHeight)
         }
     }
     
     func addInfiniteScrollingViewObservers() {
-        addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
-        addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize, options:.New, context: nil)
-        infiniteScrollingView!.isObserving = true
+        if infiniteScrollingView != nil && !infiniteScrollingView!.isObserving {
+            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
+            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize, options:.New, context: nil)
+            infiniteScrollingView!.isObserving = true
+        }
     }
     
     func removeInfiniteScrollingViewObservers() {
-        removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset)
-        removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize)
-        infiniteScrollingView!.isObserving = false
+        if infiniteScrollingView != nil && infiniteScrollingView!.isObserving {
+            removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset)
+            removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize)
+            infiniteScrollingView!.isObserving = false
+        }
     }
     
 }
@@ -140,7 +140,7 @@ public class InfiniteScrollingView: UIView {
         } else if keyPath == observeKeyContentSize {
             setNeedsLayout()
             if let new = change[NSKeyValueChangeNewKey]?.CGPointValue() {
-                self.frame = CGRect(x: CGFloat(0), y: new.y, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
+                self.frame = CGRect(x: CGFloat(0), y: scrollView!.contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
             }
         }
     }
@@ -164,7 +164,7 @@ public class InfiniteScrollingView: UIView {
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
         UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction | .BeginFromCurrentState, animations: { () -> Void in
-            scrollView?.contentInset = contentInset
+            self.scrollView?.contentInset = contentInset
         }, completion: nil)
     }
     
@@ -202,10 +202,8 @@ public class InfiniteScrollingView: UIView {
     
     public override func willMoveToSuperview(newSuperview: UIView?) {
         if superview != nil && newSuperview == nil {
-            if let isShow = scrollView?.showsInfiniteScrolling {
-                if isObserving {
-                    scrollView?.removeInfiniteScrollingViewObservers()
-                }
+            if scrollView?.showsInfiniteScrolling != nil && scrollView!.showsInfiniteScrolling{
+                scrollView?.removeInfiniteScrollingViewObservers()
             }
         }
     }
