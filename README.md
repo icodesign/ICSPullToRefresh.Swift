@@ -6,7 +6,7 @@ ICSPullToRefresh-Swift is a Swift version of [SVPullToRefresh](https://github.co
 
 > Embedded frameworks require a minimum deployment target of iOS 8. 
 
-### CocoaPods (TODO)
+### CocoaPods
 
 CocoaPods 0.36 adds supports for Swift and embedded frameworks. 
 
