@@ -43,9 +43,10 @@ class ViewController: UITableViewController, UITableViewDataSource {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 sleep(3)
                 dispatch_async(dispatch_get_main_queue(), { [unowned self] in
-                    self.tableView.infiniteScrollingView?.stopAnimating()
+                    
                     self.k += 1
                     self.tableView.reloadData()
+                    self.tableView.infiniteScrollingView?.stopAnimating()
                 })
             })
         }

@@ -193,6 +193,7 @@ public class PullToRefreshView: UIView {
     }
     
     public override func layoutSubviews() {
+        super.layoutSubviews()
         defaultView.frame = self.bounds
         activityIndicator.center = defaultView.center
         switch state {

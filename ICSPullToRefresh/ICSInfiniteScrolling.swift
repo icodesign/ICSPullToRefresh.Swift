@@ -60,6 +60,8 @@ public extension UIScrollView{
             if infiniteScrollingView!.isObserving{
                 removeInfiniteScrollingViewObservers()
             }
+            infiniteScrollingView!.setNeedsLayout()
+            infiniteScrollingView!.frame = CGRect(x: CGFloat(0), y: contentSize.height, width: infiniteScrollingView!.bounds.width, height: ICSInfiniteScrollingViewHeight)
         }
     }
     
@@ -80,7 +82,6 @@ public extension UIScrollView{
 public class InfiniteScrollingView: UIView {
     public var actionHandler: ActionHandler?
     public var isObserving: Bool = false
-    var triggeredByUser: Bool = false
     
     public var scrollView: UIScrollView? {
         return self.superview as? UIScrollView
@@ -150,7 +151,7 @@ public class InfiniteScrollingView: UIView {
         }
         if state != .Loading {
             let scrollViewContentHeight = scrollView!.contentSize.height
-            let scrollOffsetThreshold = frame.origin.y - scrollView!.bounds.height
+            let scrollOffsetThreshold = scrollViewContentHeight - scrollView!.bounds.height
             if !scrollView!.dragging && state == .Triggered {
                 state = .Loading
             } else if contentOffset!.y > scrollOffsetThreshold && state == .Stopped && scrollView!.dragging {
@@ -181,11 +182,12 @@ public class InfiniteScrollingView: UIView {
             return
         }
         var currentInset = scrollView!.contentInset
-        currentInset.bottom = scrollViewOriginContentBottomInset + bounds.height
+        currentInset.bottom = scrollViewOriginContentBottomInset + ICSInfiniteScrollingViewHeight
         setScrollViewContentInset(currentInset)
     }
     
     public override func layoutSubviews() {
+        super.layoutSubviews()
         defaultView.frame = self.bounds
         activityIndicator.center = defaultView.center
         switch state {
