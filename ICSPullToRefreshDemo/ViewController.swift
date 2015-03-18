@@ -15,12 +15,18 @@ class ViewController: UITableViewController, UITableViewDataSource {
 //        let tableView = UITableView(frame: self.view.bounds, style: .Plain)
 //        return tableView
 //    }()
+    
+    var k = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 //        view.addSubview(tableView)
         tableView.dataSource = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         tableView.addPullToFreshHandler {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 sleep(3)
@@ -29,25 +35,25 @@ class ViewController: UITableViewController, UITableViewDataSource {
                 })
             })
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64) (3 * NSEC_PER_SEC) ), dispatch_get_main_queue()) { [unowned self] () -> Void in
-            self.tableView.pullToRefreshView?.startAnimating()
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64) (1 * NSEC_PER_SEC) ), dispatch_get_main_queue()) { () -> Void in
+            self.tableView.triggerPullToRefresh()
+        }
+        
+        tableView.addInfiniteScrollingWithActionHandler {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 sleep(3)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.tableView.pullToRefreshView?.stopAnimating()
+                dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+                    self.tableView.infiniteScrollingView?.stopAnimating()
+                    self.k += 1
+                    self.tableView.reloadData()
                 })
             })
         }
-        
-        
+
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 20 + 10 * k
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

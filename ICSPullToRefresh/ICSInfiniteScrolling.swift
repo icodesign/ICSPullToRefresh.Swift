@@ -1,85 +1,83 @@
 //
-//  ICSPullToRefresh.swift
+//  ICSInfiniteScrolling.swift
 //  ICSPullToRefresh
 //
-//  Created by LEI on 3/15/15.
+//  Created by LEI on 3/17/15.
 //  Copyright (c) 2015 TouchingAPP. All rights reserved.
 //
 
 import UIKit
 
-private var pullToRefreshViewKey: Void?
+private var infiniteScrollingViewKey: Void?
 private let observeKeyContentOffset = "contentOffset"
-private let observeKeyFrame = "frame"
+private let observeKeyContentSize = "contentSize"
+private let observeKeyContentInset = "contentInset"
 
-private let ICSPullToRefreshViewHeight: CGFloat = 60
-
-public typealias ActionHandler = () -> ()
+private let ICSInfiniteScrollingViewHeight: CGFloat = 60
 
 public extension UIScrollView{
     
-    public var pullToRefreshView: PullToRefreshView? {
+    public var infiniteScrollingView: InfiniteScrollingView? {
         get {
-            return objc_getAssociatedObject(self, &pullToRefreshViewKey) as? PullToRefreshView
+            return objc_getAssociatedObject(self, &infiniteScrollingViewKey) as? InfiniteScrollingView
         }
         set(newValue) {
-            self.willChangeValueForKey("ICSPullToRefreshView")
-            objc_setAssociatedObject(self, &pullToRefreshViewKey, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN))
-            self.didChangeValueForKey("ICSPullToRefreshView")
+            self.willChangeValueForKey("ICSInfiniteScrollingView")
+            objc_setAssociatedObject(self, &infiniteScrollingViewKey, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN))
+            self.didChangeValueForKey("ICSInfiniteScrollingView")
         }
     }
     
-    public var showsPullToRefresh: Bool {
-        return pullToRefreshView != nil ? pullToRefreshView!.hidden : false
+    public var showsInfiniteScrolling: Bool {
+        return infiniteScrollingView != nil ? infiniteScrollingView!.hidden : false
     }
     
-    public func addPullToFreshHandler(actionHandler: ActionHandler){
-        if pullToRefreshView == nil {
-            pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -ICSPullToRefreshViewHeight, width: self.bounds.width, height: ICSPullToRefreshViewHeight))
-            addSubview(pullToRefreshView!)
+    public func addInfiniteScrollingWithActionHandler(actionHandler: ActionHandler){
+        if infiniteScrollingView == nil {
+            infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
+            addSubview(infiniteScrollingView!)
         }
-        pullToRefreshView?.actionHandler = actionHandler
-        pullToRefreshView?.scrollViewOriginContentTopInset = contentInset.top
-        setShowsPullToRefresh(true)
+        infiniteScrollingView?.actionHandler = actionHandler
+        infiniteScrollingView?.scrollViewOriginContentBottomInset = contentInset.bottom
+        setShowsInfiniteScrolling(true)
     }
     
-    public func triggerPullToRefresh() {
-        pullToRefreshView?.state = .Triggered
-        pullToRefreshView?.startAnimating()
+    public func triggerInfiniteScrolling() {
+        infiniteScrollingView?.state = .Triggered
+        infiniteScrollingView?.startAnimating()
     }
     
-    public func setShowsPullToRefresh(showsToPullToRefresh: Bool) {
-        if pullToRefreshView == nil {
+    public func setShowsInfiniteScrolling(showsInfiniteScrolling: Bool) {
+        if infiniteScrollingView == nil {
             return
         }
-        pullToRefreshView!.hidden = !showsToPullToRefresh
-        if showsToPullToRefresh{
-            if !pullToRefreshView!.isObserving{
-                addPullToRefreshObservers()
+        infiniteScrollingView!.hidden = !showsInfiniteScrolling
+        if showsInfiniteScrolling{
+            if !infiniteScrollingView!.isObserving{
+                addInfiniteScrollingViewObservers()
             }
         }else{
-            if pullToRefreshView!.isObserving{
-                removePullToRefreshObservers()
+            if infiniteScrollingView!.isObserving{
+                removeInfiniteScrollingViewObservers()
             }
         }
     }
     
-    func addPullToRefreshObservers() {
-        addObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
-        addObserver(pullToRefreshView!, forKeyPath: observeKeyFrame, options:.New, context: nil)
-        pullToRefreshView!.isObserving = true
+    func addInfiniteScrollingViewObservers() {
+        addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
+        addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize, options:.New, context: nil)
+        infiniteScrollingView!.isObserving = true
     }
     
-    func removePullToRefreshObservers() {
-        removeObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset)
-        removeObserver(pullToRefreshView!, forKeyPath: observeKeyFrame)
-        pullToRefreshView!.isObserving = false
+    func removeInfiniteScrollingViewObservers() {
+        removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset)
+        removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize)
+        infiniteScrollingView!.isObserving = false
     }
-
     
 }
 
-public class PullToRefreshView: UIView {
+public class InfiniteScrollingView: UIView {
     public var actionHandler: ActionHandler?
     public var isObserving: Bool = false
     var triggeredByUser: Bool = false
@@ -88,7 +86,7 @@ public class PullToRefreshView: UIView {
         return self.superview as? UIScrollView
     }
     
-    public var scrollViewOriginContentTopInset: CGFloat = 0
+    public var scrollViewOriginContentBottomInset: CGFloat = 0
     
     public enum State {
         case Stopped
@@ -105,7 +103,7 @@ public class PullToRefreshView: UIView {
                 case .Stopped:
                     resetScrollViewContentInset()
                 case .Loading:
-                    setScrollViewContentInsetForLoading()
+                    setScrollViewContentInsetForInfiniteScrolling()
                     if state == .Triggered {
                         actionHandler?()
                     }
@@ -121,33 +119,28 @@ public class PullToRefreshView: UIView {
         super.init(frame: frame)
         initViews()
     }
-
+    
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initViews()
     }
     
     public func startAnimating() {
-        if scrollView == nil {
-            return
-        }
-        scrollView?.setContentOffset(CGPoint(x: scrollView!.contentOffset.x, y: -(scrollView!.contentInset.top + bounds.height)), animated: true)
-        triggeredByUser = true
         state = .Loading
     }
     
     public func stopAnimating() {
         state = .Stopped
-        if triggeredByUser {
-            scrollView?.setContentOffset(CGPoint(x: scrollView!.contentOffset.x, y: -scrollView!.contentInset.top), animated: true)
-        }
     }
     
     public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         if keyPath == observeKeyContentOffset {
             srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue())
-        } else if keyPath == observeKeyFrame {
+        } else if keyPath == observeKeyContentSize {
             setNeedsLayout()
+            if let new = change[NSKeyValueChangeNewKey]?.CGPointValue() {
+                self.frame = CGRect(x: CGFloat(0), y: new.y, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
+            }
         }
     }
     
@@ -156,19 +149,20 @@ public class PullToRefreshView: UIView {
             return
         }
         if state != .Loading {
-            let scrollOffsetThreshold = frame.origin.y - scrollViewOriginContentTopInset
+            let scrollViewContentHeight = scrollView!.contentSize.height
+            let scrollOffsetThreshold = frame.origin.y - scrollView!.bounds.height
             if !scrollView!.dragging && state == .Triggered {
                 state = .Loading
-            } else if contentOffset!.y < scrollOffsetThreshold && scrollView!.dragging && state == .Stopped {
+            } else if contentOffset!.y > scrollOffsetThreshold && state == .Stopped && scrollView!.dragging {
                 state = .Triggered
-            } else if contentOffset!.y >= scrollOffsetThreshold && state != .Stopped {
+            } else if contentOffset!.y < scrollOffsetThreshold && state != .Stopped {
                 state == .Stopped
             }
         }
     }
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
-        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction | .BeginFromCurrentState, animations: { [unowned self] () -> Void in
+        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction | .BeginFromCurrentState, animations: { () -> Void in
             scrollView?.contentInset = contentInset
         }, completion: nil)
     }
@@ -178,17 +172,16 @@ public class PullToRefreshView: UIView {
             return
         }
         var currentInset = scrollView!.contentInset
-        currentInset.top = scrollViewOriginContentTopInset
+        currentInset.bottom = scrollViewOriginContentBottomInset
         setScrollViewContentInset(currentInset)
     }
     
-    private func setScrollViewContentInsetForLoading() {
+    private func setScrollViewContentInsetForInfiniteScrolling() {
         if scrollView == nil {
             return
         }
-        let offset = max(scrollView!.contentOffset.y * -1, 0)
         var currentInset = scrollView!.contentInset
-        currentInset.top = min(offset, scrollViewOriginContentTopInset + bounds.height)
+        currentInset.bottom = scrollViewOriginContentBottomInset + bounds.height
         setScrollViewContentInset(currentInset)
     }
     
@@ -207,9 +200,9 @@ public class PullToRefreshView: UIView {
     
     public override func willMoveToSuperview(newSuperview: UIView?) {
         if superview != nil && newSuperview == nil {
-            if let isShow = scrollView?.showsPullToRefresh {
+            if let isShow = scrollView?.showsInfiniteScrolling {
                 if isObserving {
-                    scrollView?.removePullToRefreshObservers()
+                    scrollView?.removeInfiniteScrollingViewObservers()
                 }
             }
         }
@@ -220,6 +213,7 @@ public class PullToRefreshView: UIView {
     func initViews() {
         addSubview(defaultView)
         defaultView.addSubview(activityIndicator)
+        activityIndicator.hidden = false
     }
     
     lazy var defaultView: UIView = {

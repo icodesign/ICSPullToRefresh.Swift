@@ -16,9 +16,10 @@
 		9B2781731AB5933E00769BE5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2781721AB5933E00769BE5 /* Images.xcassets */; };
 		9B2781761AB5933E00769BE5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B2781741AB5933E00769BE5 /* LaunchScreen.xib */; };
 		9B2781821AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2781811AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift */; };
-		9B27818D1AB5955B00769BE5 /* ICSPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27818C1AB5955B00769BE5 /* ICSPullToRefresh.swift */; };
 		9B27818E1AB5ECDE00769BE5 /* ICSPullToRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */; };
 		9B27818F1AB5ECDE00769BE5 /* ICSPullToRefresh.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2781471AB592FA00769BE5 /* ICSPullToRefresh.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9BE5F33B1AB8563100C150B0 /* ICSInfiniteScrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE5F33A1AB8563100C150B0 /* ICSInfiniteScrolling.swift */; };
+		9BE5F33D1AB8699100C150B0 /* ICSPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE5F33C1AB8699100C150B0 /* ICSPullToRefresh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +77,8 @@
 		9B27817B1AB5933E00769BE5 /* ICSPullToRefreshDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ICSPullToRefreshDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B2781801AB5933E00769BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B2781811AB5933E00769BE5 /* ICSPullToRefreshDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSPullToRefreshDemoTests.swift; sourceTree = "<group>"; };
-		9B27818C1AB5955B00769BE5 /* ICSPullToRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICSPullToRefresh.swift; sourceTree = "<group>"; };
+		9BE5F33A1AB8563100C150B0 /* ICSInfiniteScrolling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICSInfiniteScrolling.swift; sourceTree = "<group>"; };
+		9BE5F33C1AB8699100C150B0 /* ICSPullToRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICSPullToRefresh.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,8 +140,9 @@
 		9B2781491AB592FA00769BE5 /* ICSPullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
+				9BE5F33C1AB8699100C150B0 /* ICSPullToRefresh.swift */,
 				9B27814C1AB592FA00769BE5 /* ICSPullToRefresh.h */,
-				9B27818C1AB5955B00769BE5 /* ICSPullToRefresh.swift */,
+				9BE5F33A1AB8563100C150B0 /* ICSInfiniteScrolling.swift */,
 				9B27814A1AB592FA00769BE5 /* Supporting Files */,
 			);
 			path = ICSPullToRefresh;
@@ -379,7 +382,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B27818D1AB5955B00769BE5 /* ICSPullToRefresh.swift in Sources */,
+				9BE5F33B1AB8563100C150B0 /* ICSInfiniteScrolling.swift in Sources */,
+				9BE5F33D1AB8699100C150B0 /* ICSPullToRefresh.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,6 +687,7 @@
 				9B27815F1AB592FA00769BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B2781601AB592FA00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshTests" */ = {
 			isa = XCConfigurationList;
@@ -691,6 +696,7 @@
 				9B2781621AB592FA00769BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B2781831AB5933E00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshDemo" */ = {
 			isa = XCConfigurationList;
@@ -699,6 +705,7 @@
 				9B2781851AB5933E00769BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B2781861AB5933E00769BE5 /* Build configuration list for PBXNativeTarget "ICSPullToRefreshDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -707,6 +714,7 @@
 				9B2781881AB5933E00769BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
