@@ -20,7 +20,7 @@ use_frameworks!
 pod 'ICSPullToRefresh', '~> 0.1'
 ```
 
-### Carthage (TODO)
+### Carthage
 
 To integrate ```ICSPullToRefresh``` into your Xcode project using Carthage, specify it in your ```Cartfile```:
 
