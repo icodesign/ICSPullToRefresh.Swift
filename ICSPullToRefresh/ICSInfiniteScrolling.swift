@@ -213,7 +213,6 @@ public class InfiniteScrollingView: UIView {
     func initViews() {
         addSubview(defaultView)
         defaultView.addSubview(activityIndicator)
-        activityIndicator.hidden = false
     }
     
     lazy var defaultView: UIView = {
@@ -223,7 +222,7 @@ public class InfiniteScrollingView: UIView {
     
     lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        activityIndicator.hidesWhenStopped = false
+        activityIndicator.hidesWhenStopped = true
         return activityIndicator
     }()
     
