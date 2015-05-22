@@ -196,6 +196,9 @@ public class PullToRefreshView: UIView {
         super.layoutSubviews()
         defaultView.frame = self.bounds
         activityIndicator.center = defaultView.center
+        if let superview = superview {
+          activityIndicator.center.x = superview.center.x
+        }
         switch state {
         case .Stopped:
             activityIndicator.stopAnimating()
