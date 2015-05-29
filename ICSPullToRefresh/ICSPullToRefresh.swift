@@ -48,12 +48,12 @@ public extension UIScrollView{
         pullToRefreshView?.startAnimating()
     }
     
-    public func setShowsPullToRefresh(showsToPullToRefresh: Bool) {
+    public func setShowsPullToRefresh(showsPullToRefresh: Bool) {
         if pullToRefreshView == nil {
             return
         }
-        pullToRefreshView!.hidden = !showsToPullToRefresh
-        if showsToPullToRefresh{
+        pullToRefreshView!.hidden = !showsPullToRefresh
+        if showsPullToRefresh{
             addPullToRefreshObservers()
         }else{
             removePullToRefreshObservers()

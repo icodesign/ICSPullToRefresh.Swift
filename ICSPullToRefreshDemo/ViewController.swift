@@ -30,6 +30,7 @@ class ViewController: UITableViewController, UITableViewDataSource {
         tableView.addPullToRefreshHandler {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 sleep(3)
+                self.k = 0;
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     tableView.pullToRefreshView?.stopAnimating()
                 })
