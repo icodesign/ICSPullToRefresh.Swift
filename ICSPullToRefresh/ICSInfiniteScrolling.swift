@@ -157,7 +157,7 @@ public class InfiniteScrollingView: UIView {
             }
             if !scrollView!.dragging && state == .Triggered {
                 state = .Loading
-            } else if contentOffset!.y > scrollOffsetThreshold && state == .Stopped && scrollView!.dragging {
+            } else if contentOffset!.y > 0 && contentOffset!.y > scrollOffsetThreshold && state == .Stopped && scrollView!.dragging {
                 state = .Triggered
             } else if contentOffset!.y < scrollOffsetThreshold && state != .Stopped {
                 state == .Stopped
@@ -193,6 +193,9 @@ public class InfiniteScrollingView: UIView {
         super.layoutSubviews()
         defaultView.frame = self.bounds
         activityIndicator.center = defaultView.center
+        if let superview = superview {
+          activityIndicator.center.x = superview.center.x
+        }
         switch state {
         case .Stopped:
             activityIndicator.stopAnimating()
