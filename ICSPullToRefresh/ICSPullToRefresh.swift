@@ -24,7 +24,7 @@ public extension UIScrollView{
         }
         set(newValue) {
             self.willChangeValueForKey("ICSPullToRefreshView")
-            objc_setAssociatedObject(self, &pullToRefreshViewKey, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN))
+            objc_setAssociatedObject(self, &pullToRefreshViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             self.didChangeValueForKey("ICSPullToRefreshView")
         }
     }
@@ -37,9 +37,9 @@ public extension UIScrollView{
         if pullToRefreshView == nil {
             pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -ICSPullToRefreshViewHeight, width: self.bounds.width, height: ICSPullToRefreshViewHeight))
             addSubview(pullToRefreshView!)
+            pullToRefreshView?.scrollViewOriginContentTopInset = contentInset.top
         }
         pullToRefreshView?.actionHandler = actionHandler
-        pullToRefreshView?.scrollViewOriginContentTopInset = contentInset.top
         setShowsPullToRefresh(true)
     }
     
@@ -122,7 +122,7 @@ public class PullToRefreshView: UIView {
         initViews()
     }
 
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initViews()
     }
@@ -143,9 +143,9 @@ public class PullToRefreshView: UIView {
         }
     }
     
-    public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == observeKeyContentOffset {
-            srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue())
+            srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue)
         } else if keyPath == observeKeyFrame {
             setNeedsLayout()
         }
@@ -168,7 +168,7 @@ public class PullToRefreshView: UIView {
     }
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
-        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction | .BeginFromCurrentState, animations: { [unowned self] () -> Void in
+        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { [unowned self] () -> Void in
             scrollView?.contentInset = contentInset
         }, completion: nil)
     }

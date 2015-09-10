@@ -23,7 +23,7 @@ public extension UIScrollView{
         }
         set(newValue) {
             self.willChangeValueForKey("ICSInfiniteScrollingView")
-            objc_setAssociatedObject(self, &infiniteScrollingViewKey, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN))
+            objc_setAssociatedObject(self, &infiniteScrollingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             self.didChangeValueForKey("ICSInfiniteScrollingView")
         }
     }
@@ -36,9 +36,9 @@ public extension UIScrollView{
         if infiniteScrollingView == nil {
             infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
             addSubview(infiniteScrollingView!)
+            infiniteScrollingView?.scrollViewOriginContentBottomInset = contentInset.bottom
         }
         infiniteScrollingView?.actionHandler = actionHandler
-        infiniteScrollingView?.scrollViewOriginContentBottomInset = contentInset.bottom
         setShowsInfiniteScrolling(true)
     }
     
@@ -121,7 +121,7 @@ public class InfiniteScrollingView: UIView {
         initViews()
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initViews()
     }
@@ -134,12 +134,12 @@ public class InfiniteScrollingView: UIView {
         state = .Stopped
     }
     
-    public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == observeKeyContentOffset {
-            srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue())
+            srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue)
         } else if keyPath == observeKeyContentSize {
             setNeedsLayout()
-            if let new = change[NSKeyValueChangeNewKey]?.CGPointValue() {
+            if let new = change[NSKeyValueChangeNewKey]?.CGPointValue {
                 self.frame = CGRect(x: CGFloat(0), y: scrollView!.contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
             }
         }
@@ -166,7 +166,7 @@ public class InfiniteScrollingView: UIView {
     }
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
-        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction | .BeginFromCurrentState, animations: { () -> Void in
+        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
             self.scrollView?.contentInset = contentInset
         }, completion: nil)
     }
