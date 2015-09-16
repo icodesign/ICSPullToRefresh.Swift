@@ -145,7 +145,7 @@ public class PullToRefreshView: UIView {
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == observeKeyContentOffset {
-            srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue)
+            srollViewDidScroll(change?[NSKeyValueChangeNewKey]?.CGPointValue)
         } else if keyPath == observeKeyFrame {
             setNeedsLayout()
         }
@@ -168,7 +168,7 @@ public class PullToRefreshView: UIView {
     }
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
-        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { [unowned self] () -> Void in
+        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
             scrollView?.contentInset = contentInset
         }, completion: nil)
     }

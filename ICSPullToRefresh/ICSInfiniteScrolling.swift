@@ -136,10 +136,10 @@ public class InfiniteScrollingView: UIView {
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == observeKeyContentOffset {
-            srollViewDidScroll(change[NSKeyValueChangeNewKey]?.CGPointValue)
+            srollViewDidScroll(change?[NSKeyValueChangeNewKey]?.CGPointValue)
         } else if keyPath == observeKeyContentSize {
             setNeedsLayout()
-            if let new = change[NSKeyValueChangeNewKey]?.CGPointValue {
+            if let _ = change?[NSKeyValueChangeNewKey]?.CGPointValue {
                 self.frame = CGRect(x: CGFloat(0), y: scrollView!.contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
             }
         }

@@ -9,7 +9,7 @@
 import UIKit
 import ICSPullToRefresh
 
-class ViewController: UITableViewController, UITableViewDataSource {
+class ViewController: UITableViewController {
     
 //    lazy var tableView: UITableView = { [unowned self] in
 //        let tableView = UITableView(frame: self.view.bounds, style: .Plain)
@@ -60,7 +60,7 @@ class ViewController: UITableViewController, UITableViewDataSource {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let identifier = "cell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(identifier)
         if cell == nil{
             cell = UITableViewCell(style: .Value1, reuseIdentifier: identifier)
         }
