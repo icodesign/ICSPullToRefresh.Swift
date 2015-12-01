@@ -32,7 +32,7 @@ class ViewController: UITableViewController {
                 sleep(3)
                 self.k = 0;
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    tableView.pullToRefreshView?.stopAnimating()
+                    self.tableView.pullToRefreshView?.stopAnimating()
                 })
             })
         }

@@ -17,7 +17,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'ICSPullToRefresh', '~> 0.2'
+pod 'ICSPullToRefresh', '~> 0.3'
 ```
 
 ### Carthage
@@ -25,7 +25,7 @@ pod 'ICSPullToRefresh', '~> 0.2'
 To integrate ```ICSPullToRefresh``` into your Xcode project using Carthage, specify it in your ```Cartfile```:
 
 ```
-github "iCodesign/ICSPullToRefresh" >= 0.2
+github "iCodesign/ICSPullToRefresh" >= 0.3
 ```
 
 ### Manually
@@ -68,7 +68,7 @@ tableView.addPullToRefreshHandler {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
         // do something in the background
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            tableView.pullToRefreshView?.stopAnimating()
+            self.tableView.pullToRefreshView?.stopAnimating()
         })
     })
 }

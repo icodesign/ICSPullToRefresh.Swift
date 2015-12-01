@@ -169,7 +169,7 @@ public class PullToRefreshView: UIView {
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
         UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
-            scrollView?.contentInset = contentInset
+            self.scrollView?.contentInset = contentInset
         }, completion: nil)
     }
     
