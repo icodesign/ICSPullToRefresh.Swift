@@ -131,7 +131,14 @@ public class PullToRefreshView: UIView {
         if scrollView == nil {
             return
         }
-        scrollView?.setContentOffset(CGPoint(x: scrollView!.contentOffset.x, y: -(scrollView!.contentInset.top + bounds.height)), animated: true)
+
+        animate {
+            self.scrollView?.setContentOffset(CGPoint(
+                x: self.scrollView!.contentOffset.x,
+                y: -(self.scrollView!.contentInset.top + self.bounds.height)
+            ), animated: false)
+        }
+
         triggeredByUser = true
         state = .Loading
     }
@@ -139,10 +146,15 @@ public class PullToRefreshView: UIView {
     public func stopAnimating() {
         state = .Stopped
         if triggeredByUser {
-            scrollView?.setContentOffset(CGPoint(x: scrollView!.contentOffset.x, y: -scrollView!.contentInset.top), animated: true)
+            animate {
+                self.scrollView?.setContentOffset(CGPoint(
+                    x: self.scrollView!.contentOffset.x,
+                    y: -self.scrollView!.contentInset.top
+                ), animated: false)
+            }
         }
     }
-    
+
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == observeKeyContentOffset {
             srollViewDidScroll(change?[NSKeyValueChangeNewKey]?.CGPointValue)
@@ -168,9 +180,9 @@ public class PullToRefreshView: UIView {
     }
     
     private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
-        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
+        animate {
             self.scrollView?.contentInset = contentInset
-        }, completion: nil)
+        }
     }
     
     private func resetScrollViewContentInset() {
@@ -191,7 +203,17 @@ public class PullToRefreshView: UIView {
         currentInset.top = min(offset, scrollViewOriginContentTopInset + bounds.height)
         setScrollViewContentInset(currentInset)
     }
-    
+
+    private func animate(animations: () -> ()) {
+        UIView.animateWithDuration(0.3,
+            delay: 0,
+            options: [.AllowUserInteraction, .BeginFromCurrentState],
+            animations: animations
+        ) { _ in
+            self.setNeedsLayout()
+        }
+    }
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         defaultView.frame = self.bounds
