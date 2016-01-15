@@ -155,6 +155,12 @@ public class InfiniteScrollingView: UIView {
             if (scrollViewContentHeight < self.scrollView!.bounds.height) {
                 scrollOffsetThreshold = 40 - self.scrollView!.contentInset.top
             }
+
+            activityIndicator.hidesWhenStopped = !(
+                scrollView!.dragging &&
+                scrollViewContentHeight > self.scrollView!.bounds.height
+            )
+
             if !scrollView!.dragging && state == .Triggered {
                 state = .Loading
             } else if contentOffset!.y > scrollOffsetThreshold && state == .Stopped && scrollView!.dragging {
