@@ -101,8 +101,6 @@ public class InfiniteScrollingView: UIView {
             if state != newValue {
                 self.setNeedsLayout()
                 switch newValue{
-                case .Stopped:
-                    resetScrollViewContentInset()
                 case .Loading:
                     setScrollViewContentInsetForInfiniteScrolling()
                     if state == .Triggered {
@@ -111,6 +109,16 @@ public class InfiniteScrollingView: UIView {
                 default:
                     break
                 }
+            }
+        }
+
+        didSet {
+            switch state {
+            case .Stopped:
+                resetScrollViewContentInset()
+
+            default:
+                break
             }
         }
     }
