@@ -242,5 +242,13 @@ public class InfiniteScrollingView: UIView {
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
     }()
+
+    public func setActivityIndicatorColor(color: UIColor) {
+        activityIndicator.color = color
+    }
+
+    public func setActivityIndicatorStyle(style: UIActivityIndicatorViewStyle) {
+        activityIndicator.activityIndicatorViewStyle = style
+    }
     
 }

@@ -253,5 +253,13 @@ public class PullToRefreshView: UIView {
         activityIndicator.hidesWhenStopped = false
         return activityIndicator
     }()
+
+    public func setActivityIndicatorColor(color: UIColor) {
+        activityIndicator.color = color
+    }
+
+    public func setActivityIndicatorStyle(style: UIActivityIndicatorViewStyle) {
+        activityIndicator.activityIndicatorViewStyle = style
+    }
     
 }
