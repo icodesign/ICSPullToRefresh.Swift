@@ -102,8 +102,6 @@ public class PullToRefreshView: UIView {
             if state != newValue {
                 self.setNeedsLayout()
                 switch newValue{
-                case .Stopped:
-                    resetScrollViewContentInset()
                 case .Loading:
                     setScrollViewContentInsetForLoading()
                     if state == .Triggered {
@@ -112,6 +110,15 @@ public class PullToRefreshView: UIView {
                 default:
                     break
                 }
+            }
+        }
+        didSet {
+            switch state {
+            case .Stopped:
+                resetScrollViewContentInset()
+                
+            default:
+                break
             }
         }
     }
