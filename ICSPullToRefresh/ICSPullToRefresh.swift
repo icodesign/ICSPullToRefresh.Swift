@@ -37,6 +37,7 @@ public extension UIScrollView{
         if pullToRefreshView == nil {
             pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -ICSPullToRefreshViewHeight, width: self.bounds.width, height: ICSPullToRefreshViewHeight))
             addSubview(pullToRefreshView!)
+            pullToRefreshView?.autoresizingMask = .FlexibleWidth
             pullToRefreshView?.scrollViewOriginContentTopInset = contentInset.top
         }
         pullToRefreshView?.actionHandler = actionHandler
