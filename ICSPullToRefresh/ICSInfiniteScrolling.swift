@@ -36,6 +36,7 @@ public extension UIScrollView{
         if infiniteScrollingView == nil {
             infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
             addSubview(infiniteScrollingView!)
+            infiniteScrollingView?.autoresizingMask = .FlexibleWidth
             infiniteScrollingView?.scrollViewOriginContentBottomInset = contentInset.bottom
         }
         infiniteScrollingView?.actionHandler = actionHandler
