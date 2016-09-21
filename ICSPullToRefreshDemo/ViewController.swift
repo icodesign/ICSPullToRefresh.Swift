@@ -25,44 +25,44 @@ class ViewController: UITableViewController {
         tableView.dataSource = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.addPullToRefreshHandler {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            DispatchQueue.global(qos: .userInitiated).async{
                 sleep(3)
                 self.k = 0;
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async { [unowned self] in
                     self.tableView.pullToRefreshView?.stopAnimating()
-                })
-            })
+                }
+            }
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64) (1 * NSEC_PER_SEC) ), dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double((Int64) (1 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) { () -> Void in
             self.tableView.triggerPullToRefresh()
         }
         
         tableView.addInfiniteScrollingWithHandler {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            DispatchQueue.global(qos: .userInitiated).async {
                 sleep(3)
-                dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+                DispatchQueue.main.async { [unowned self] in
                     
                     self.k += 1
                     self.tableView.reloadData()
                     self.tableView.infiniteScrollingView?.stopAnimating()
-                })
-            })
+                }
+            }
         }
 
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10 + 4 * k
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "cell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil{
-            cell = UITableViewCell(style: .Value1, reuseIdentifier: identifier)
+            cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
         }
         cell!.textLabel?.text = "Test"
         return cell!

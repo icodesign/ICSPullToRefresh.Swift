@@ -22,21 +22,21 @@ public extension UIScrollView{
             return objc_getAssociatedObject(self, &infiniteScrollingViewKey) as? InfiniteScrollingView
         }
         set(newValue) {
-            self.willChangeValueForKey("ICSInfiniteScrollingView")
+            self.willChangeValue(forKey: "ICSInfiniteScrollingView")
             objc_setAssociatedObject(self, &infiniteScrollingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-            self.didChangeValueForKey("ICSInfiniteScrollingView")
+            self.didChangeValue(forKey: "ICSInfiniteScrollingView")
         }
     }
     
     public var showsInfiniteScrolling: Bool {
-        return infiniteScrollingView != nil ? infiniteScrollingView!.hidden : false
+        return infiniteScrollingView != nil ? infiniteScrollingView!.isHidden : false
     }
     
-    public func addInfiniteScrollingWithHandler(actionHandler: ActionHandler){
+    public func addInfiniteScrollingWithHandler(_ actionHandler: @escaping ActionHandler){
         if infiniteScrollingView == nil {
             infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
             addSubview(infiniteScrollingView!)
-            infiniteScrollingView?.autoresizingMask = .FlexibleWidth
+            infiniteScrollingView?.autoresizingMask = .flexibleWidth
             infiniteScrollingView?.scrollViewOriginContentBottomInset = contentInset.bottom
         }
         infiniteScrollingView?.actionHandler = actionHandler
@@ -44,15 +44,15 @@ public extension UIScrollView{
     }
     
     public func triggerInfiniteScrolling() {
-        infiniteScrollingView?.state = .Triggered
+        infiniteScrollingView?.state = .triggered
         infiniteScrollingView?.startAnimating()
     }
     
-    public func setShowsInfiniteScrolling(showsInfiniteScrolling: Bool) {
+    public func setShowsInfiniteScrolling(_ showsInfiniteScrolling: Bool) {
         if infiniteScrollingView == nil {
             return
         }
-        infiniteScrollingView!.hidden = !showsInfiniteScrolling
+        infiniteScrollingView!.isHidden = !showsInfiniteScrolling
         if showsInfiniteScrolling{
             addInfiniteScrollingViewObservers()
         }else{
@@ -64,8 +64,8 @@ public extension UIScrollView{
     
     func addInfiniteScrollingViewObservers() {
         if infiniteScrollingView != nil && !infiniteScrollingView!.isObserving {
-            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
-            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize, options:.New, context: nil)
+            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset, options:.new, context: nil)
+            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize, options:.new, context: nil)
             infiniteScrollingView!.isObserving = true
         }
     }
@@ -80,31 +80,31 @@ public extension UIScrollView{
     
 }
 
-public class InfiniteScrollingView: UIView {
-    public var actionHandler: ActionHandler?
-    public var isObserving: Bool = false
+open class InfiniteScrollingView: UIView {
+    open var actionHandler: ActionHandler?
+    open var isObserving: Bool = false
     
-    public var scrollView: UIScrollView? {
+    open var scrollView: UIScrollView? {
         return self.superview as? UIScrollView
     }
     
-    public var scrollViewOriginContentBottomInset: CGFloat = 0
+    open var scrollViewOriginContentBottomInset: CGFloat = 0
     
     public enum State {
-        case Stopped
-        case Triggered
-        case Loading
-        case All
+        case stopped
+        case triggered
+        case loading
+        case all
     }
     
-    public var state: State = .Stopped {
+    open var state: State = .stopped {
         willSet {
             if state != newValue {
                 self.setNeedsLayout()
                 switch newValue{
-                case .Loading:
+                case .loading:
                     setScrollViewContentInsetForInfiniteScrolling()
-                    if state == .Triggered {
+                    if state == .triggered {
                         actionHandler?()
                     }
                 default:
@@ -115,7 +115,7 @@ public class InfiniteScrollingView: UIView {
 
         didSet {
             switch state {
-            case .Stopped:
+            case .stopped:
                 resetScrollViewContentInset()
 
             default:
@@ -135,30 +135,30 @@ public class InfiniteScrollingView: UIView {
         initViews()
     }
     
-    public func startAnimating() {
-        state = .Loading
+    open func startAnimating() {
+        state = .loading
     }
     
-    public func stopAnimating() {
-        state = .Stopped
+    open func stopAnimating() {
+        state = .stopped
     }
     
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == observeKeyContentOffset {
-            srollViewDidScroll(change?[NSKeyValueChangeNewKey]?.CGPointValue)
+            srollViewDidScroll((change?[NSKeyValueChangeKey.newKey] as AnyObject).cgPointValue)
         } else if keyPath == observeKeyContentSize {
             setNeedsLayout()
-            if let _ = change?[NSKeyValueChangeNewKey]?.CGPointValue {
+            if let _ = (change?[NSKeyValueChangeKey.newKey] as AnyObject).cgPointValue {
                 self.frame = CGRect(x: CGFloat(0), y: scrollView!.contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
             }
         }
     }
     
-    private func srollViewDidScroll(contentOffset: CGPoint?) {
+    fileprivate func srollViewDidScroll(_ contentOffset: CGPoint?) {
         if scrollView == nil || contentOffset == nil{
             return
         }
-        if state != .Loading {
+        if state != .loading {
             let scrollViewContentHeight = scrollView!.contentSize.height
             var scrollOffsetThreshold = scrollViewContentHeight - scrollView!.bounds.height + 40
             if (scrollViewContentHeight < self.scrollView!.bounds.height) {
@@ -166,27 +166,27 @@ public class InfiniteScrollingView: UIView {
             }
 
             activityIndicator.hidesWhenStopped = !(
-                scrollView!.dragging &&
+                scrollView!.isDragging &&
                 scrollViewContentHeight > self.scrollView!.bounds.height
             )
 
-            if !scrollView!.dragging && state == .Triggered {
-                state = .Loading
-            } else if contentOffset!.y > scrollOffsetThreshold && state == .Stopped && scrollView!.dragging {
-                state = .Triggered
-            } else if contentOffset!.y < scrollOffsetThreshold && state != .Stopped {
-                state == .Stopped
+            if !scrollView!.isDragging && state == .triggered {
+                state = .loading
+            } else if contentOffset!.y > scrollOffsetThreshold && state == .stopped && scrollView!.isDragging {
+                state = .triggered
+            } else if contentOffset!.y < scrollOffsetThreshold && state != .stopped {
+                state == .stopped
             }
         }
     }
     
-    private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
-        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
+    fileprivate func setScrollViewContentInset(_ contentInset: UIEdgeInsets) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .beginFromCurrentState], animations: { () -> Void in
             self.scrollView?.contentInset = contentInset
         }, completion: nil)
     }
     
-    private func resetScrollViewContentInset() {
+    fileprivate func resetScrollViewContentInset() {
         if scrollView == nil {
             return
         }
@@ -195,7 +195,7 @@ public class InfiniteScrollingView: UIView {
         setScrollViewContentInset(currentInset)
     }
     
-    private func setScrollViewContentInsetForInfiniteScrolling() {
+    fileprivate func setScrollViewContentInsetForInfiniteScrolling() {
         if scrollView == nil {
             return
         }
@@ -204,21 +204,21 @@ public class InfiniteScrollingView: UIView {
         setScrollViewContentInset(currentInset)
     }
     
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         defaultView.frame = self.bounds
         activityIndicator.center = defaultView.center
         switch state {
-        case .Stopped:
+        case .stopped:
             activityIndicator.stopAnimating()
-        case .Loading:
+        case .loading:
             activityIndicator.startAnimating()
         default:
             break
         }
     }
     
-    public override func willMoveToSuperview(newSuperview: UIView?) {
+    open override func willMove(toSuperview newSuperview: UIView?) {
         if superview != nil && newSuperview == nil {
             if scrollView?.showsInfiniteScrolling != nil && scrollView!.showsInfiniteScrolling{
                 scrollView?.removeInfiniteScrollingViewObservers()
@@ -239,16 +239,16 @@ public class InfiniteScrollingView: UIView {
     }()
     
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
     }()
 
-    public func setActivityIndicatorColor(color: UIColor) {
+    open func setActivityIndicatorColor(_ color: UIColor) {
         activityIndicator.color = color
     }
 
-    public func setActivityIndicatorStyle(style: UIActivityIndicatorViewStyle) {
+    open func setActivityIndicatorStyle(_ style: UIActivityIndicatorViewStyle) {
         activityIndicator.activityIndicatorViewStyle = style
     }
     
