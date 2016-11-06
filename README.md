@@ -17,7 +17,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'ICSPullToRefresh', '~> 0.4'
+pod 'ICSPullToRefresh', '~> 0.6'
 ```
 
 ### Carthage
@@ -25,7 +25,7 @@ pod 'ICSPullToRefresh', '~> 0.4'
 To integrate ```ICSPullToRefresh``` into your Xcode project using Carthage, specify it in your ```Cartfile```:
 
 ```
-github "iCodesign/ICSPullToRefresh" >= 0.4
+github "iCodesign/ICSPullToRefresh" >= 0.6
 ```
 
 ### Manually
