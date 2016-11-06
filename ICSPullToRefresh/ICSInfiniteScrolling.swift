@@ -8,12 +8,17 @@
 
 import UIKit
 
-private var infiniteScrollingViewKey: Void?
-private let observeKeyContentOffset = "contentOffset"
-private let observeKeyContentSize = "contentSize"
-private let observeKeyContentInset = "contentInset"
+fileprivate var infiniteScrollingViewKey: Void?
 
-private let ICSInfiniteScrollingViewHeight: CGFloat = 60
+fileprivate struct Constants {
+    static let observeKeyContentOffset = "contentOffset"
+    static let observeKeyContentSize = "contentSize"
+    static let observeKeyContentInset = "contentInset"
+
+    static let infiniteScrollingViewValueKey = "ICSInfiniteScrollingView"
+
+    static let infiniteScrollingViewHeight: CGFloat = 60
+}
 
 public extension UIScrollView{
     
@@ -22,19 +27,22 @@ public extension UIScrollView{
             return objc_getAssociatedObject(self, &infiniteScrollingViewKey) as? InfiniteScrollingView
         }
         set(newValue) {
-            self.willChangeValue(forKey: "ICSInfiniteScrollingView")
+            willChangeValue(forKey: Constants.infiniteScrollingViewValueKey)
             objc_setAssociatedObject(self, &infiniteScrollingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-            self.didChangeValue(forKey: "ICSInfiniteScrollingView")
+            didChangeValue(forKey: Constants.infiniteScrollingViewValueKey)
         }
     }
     
     public var showsInfiniteScrolling: Bool {
-        return infiniteScrollingView != nil ? infiniteScrollingView!.isHidden : false
+        guard let infiniteScrollingView = infiniteScrollingView else {
+            return false
+        }
+        return !infiniteScrollingView.isHidden
     }
     
     public func addInfiniteScrollingWithHandler(_ actionHandler: @escaping ActionHandler){
         if infiniteScrollingView == nil {
-            infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
+            infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: bounds.width, height: Constants.infiniteScrollingViewHeight))
             addSubview(infiniteScrollingView!)
             infiniteScrollingView?.autoresizingMask = .flexibleWidth
             infiniteScrollingView?.scrollViewOriginContentBottomInset = contentInset.bottom
@@ -49,35 +57,36 @@ public extension UIScrollView{
     }
     
     public func setShowsInfiniteScrolling(_ showsInfiniteScrolling: Bool) {
-        if infiniteScrollingView == nil {
+        guard let infiniteScrollingView = infiniteScrollingView else {
             return
         }
-        infiniteScrollingView!.isHidden = !showsInfiniteScrolling
-        if showsInfiniteScrolling{
+        infiniteScrollingView.isHidden = !showsInfiniteScrolling
+        if showsInfiniteScrolling {
             addInfiniteScrollingViewObservers()
-        }else{
+        } else {
             removeInfiniteScrollingViewObservers()
-            infiniteScrollingView!.setNeedsLayout()
-            infiniteScrollingView!.frame = CGRect(x: CGFloat(0), y: contentSize.height, width: infiniteScrollingView!.bounds.width, height: ICSInfiniteScrollingViewHeight)
+            infiniteScrollingView.setNeedsLayout()
+            infiniteScrollingView.frame = CGRect(x: CGFloat(0), y: contentSize.height, width: infiniteScrollingView.bounds.width, height: Constants.infiniteScrollingViewHeight)
         }
     }
     
-    func addInfiniteScrollingViewObservers() {
-        if infiniteScrollingView != nil && !infiniteScrollingView!.isObserving {
-            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset, options:.new, context: nil)
-            addObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize, options:.new, context: nil)
-            infiniteScrollingView!.isObserving = true
+    fileprivate func addInfiniteScrollingViewObservers() {
+        guard let infiniteScrollingView = infiniteScrollingView, !infiniteScrollingView.isObserving else {
+            return
         }
+        addObserver(infiniteScrollingView, forKeyPath: Constants.observeKeyContentOffset, options:.new, context: nil)
+        addObserver(infiniteScrollingView, forKeyPath: Constants.observeKeyContentSize, options:.new, context: nil)
+        infiniteScrollingView.isObserving = true
     }
     
-    func removeInfiniteScrollingViewObservers() {
-        if infiniteScrollingView != nil && infiniteScrollingView!.isObserving {
-            removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset)
-            removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentSize)
-            infiniteScrollingView!.isObserving = false
+    fileprivate func removeInfiniteScrollingViewObservers() {
+        guard let infiniteScrollingView = infiniteScrollingView, infiniteScrollingView.isObserving else {
+            return
         }
+        removeObserver(infiniteScrollingView, forKeyPath: Constants.observeKeyContentOffset)
+        removeObserver(infiniteScrollingView, forKeyPath: Constants.observeKeyContentSize)
+        infiniteScrollingView.isObserving = false
     }
-    
 }
 
 open class InfiniteScrollingView: UIView {
@@ -100,8 +109,8 @@ open class InfiniteScrollingView: UIView {
     open var state: State = .stopped {
         willSet {
             if state != newValue {
-                self.setNeedsLayout()
-                switch newValue{
+                setNeedsLayout()
+                switch newValue {
                 case .loading:
                     setScrollViewContentInsetForInfiniteScrolling()
                     if state == .triggered {
@@ -144,39 +153,40 @@ open class InfiniteScrollingView: UIView {
     }
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == observeKeyContentOffset {
+        if keyPath == Constants.observeKeyContentOffset {
             srollViewDidScroll((change?[NSKeyValueChangeKey.newKey] as AnyObject).cgPointValue)
-        } else if keyPath == observeKeyContentSize {
+        } else if keyPath ==  Constants.observeKeyContentSize {
             setNeedsLayout()
             if let _ = (change?[NSKeyValueChangeKey.newKey] as AnyObject).cgPointValue {
-                self.frame = CGRect(x: CGFloat(0), y: scrollView!.contentSize.height, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight)
+                self.frame = CGRect(x: CGFloat(0), y: scrollView!.contentSize.height, width: self.bounds.width, height:  Constants.infiniteScrollingViewHeight)
             }
         }
     }
     
     fileprivate func srollViewDidScroll(_ contentOffset: CGPoint?) {
-        if scrollView == nil || contentOffset == nil{
+        guard let scrollView = scrollView, let contentOffset = contentOffset else {
             return
         }
-        if state != .loading {
-            let scrollViewContentHeight = scrollView!.contentSize.height
-            var scrollOffsetThreshold = scrollViewContentHeight - scrollView!.bounds.height + 40
-            if (scrollViewContentHeight < self.scrollView!.bounds.height) {
-                scrollOffsetThreshold = 40 - self.scrollView!.contentInset.top
-            }
+        guard state != .loading else {
+            return
+        }
+        let scrollViewContentHeight = scrollView.contentSize.height
+        var scrollOffsetThreshold = scrollViewContentHeight - scrollView.bounds.height + 40
+        if (scrollViewContentHeight < self.scrollView!.bounds.height) {
+            scrollOffsetThreshold = 40 - self.scrollView!.contentInset.top
+        }
 
-            activityIndicator.hidesWhenStopped = !(
-                scrollView!.isDragging &&
-                scrollViewContentHeight > self.scrollView!.bounds.height
-            )
+        activityIndicator.hidesWhenStopped = !(
+            scrollView.isDragging &&
+            scrollViewContentHeight > self.scrollView!.bounds.height
+        )
 
-            if !scrollView!.isDragging && state == .triggered {
-                state = .loading
-            } else if contentOffset!.y > scrollOffsetThreshold && state == .stopped && scrollView!.isDragging {
-                state = .triggered
-            } else if contentOffset!.y < scrollOffsetThreshold && state != .stopped {
-                state == .stopped
-            }
+        if !scrollView.isDragging && state == .triggered {
+            state = .loading
+        } else if contentOffset.y > scrollOffsetThreshold && state == .stopped && scrollView.isDragging {
+            state = .triggered
+        } else if contentOffset.y < scrollOffsetThreshold && state != .stopped {
+            state = .stopped
         }
     }
     
@@ -187,20 +197,20 @@ open class InfiniteScrollingView: UIView {
     }
     
     fileprivate func resetScrollViewContentInset() {
-        if scrollView == nil {
+        guard let scrollView = scrollView else {
             return
         }
-        var currentInset = scrollView!.contentInset
+        var currentInset = scrollView.contentInset
         currentInset.bottom = scrollViewOriginContentBottomInset
         setScrollViewContentInset(currentInset)
     }
     
     fileprivate func setScrollViewContentInsetForInfiniteScrolling() {
-        if scrollView == nil {
+        guard let scrollView = scrollView else {
             return
         }
-        var currentInset = scrollView!.contentInset
-        currentInset.bottom = scrollViewOriginContentBottomInset + ICSInfiniteScrollingViewHeight
+        var currentInset = scrollView.contentInset
+        currentInset.bottom = scrollViewOriginContentBottomInset +  Constants.infiniteScrollingViewHeight
         setScrollViewContentInset(currentInset)
     }
     
@@ -219,26 +229,25 @@ open class InfiniteScrollingView: UIView {
     }
     
     open override func willMove(toSuperview newSuperview: UIView?) {
-        if superview != nil && newSuperview == nil {
-            if scrollView?.showsInfiniteScrolling != nil && scrollView!.showsInfiniteScrolling{
-                scrollView?.removeInfiniteScrollingViewObservers()
-            }
+        guard newSuperview == nil, let _ = superview, let showsInfiniteScrolling = scrollView?.showsInfiniteScrolling, showsInfiniteScrolling else {
+            return
         }
+        scrollView?.removeInfiniteScrollingViewObservers()
     }
     
     // MARK: Basic Views
     
-    func initViews() {
+    fileprivate func initViews() {
         addSubview(defaultView)
         defaultView.addSubview(activityIndicator)
     }
     
-    lazy var defaultView: UIView = {
+    fileprivate lazy var defaultView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var activityIndicator: UIActivityIndicatorView = {
+    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.hidesWhenStopped = true
         return activityIndicator

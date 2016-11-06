@@ -9,12 +9,17 @@
 import UIKit
 
 private var pullToRefreshViewKey: Void?
-private let observeKeyContentOffset = "contentOffset"
-private let observeKeyFrame = "frame"
-
-private let ICSPullToRefreshViewHeight: CGFloat = 60
 
 public typealias ActionHandler = () -> ()
+
+fileprivate struct Constants {
+    static let observeKeyContentOffset = "contentOffset"
+    static let observeKeyFrame = "frame"
+
+    static let pullToRefreshViewValueKey = "ICSPullToRefreshView"
+
+    static let pullToRefreshViewHeight: CGFloat = 60
+}
 
 public extension UIScrollView{
     
@@ -23,19 +28,22 @@ public extension UIScrollView{
             return objc_getAssociatedObject(self, &pullToRefreshViewKey) as? PullToRefreshView
         }
         set(newValue) {
-            self.willChangeValue(forKey: "ICSPullToRefreshView")
+            willChangeValue(forKey: Constants.pullToRefreshViewValueKey)
             objc_setAssociatedObject(self, &pullToRefreshViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-            self.didChangeValue(forKey: "ICSPullToRefreshView")
+            didChangeValue(forKey: Constants.pullToRefreshViewValueKey)
         }
     }
     
     public var showsPullToRefresh: Bool {
-        return pullToRefreshView != nil ? pullToRefreshView!.isHidden : false
+        guard let pullToRefreshView = pullToRefreshView else {
+            return false
+        }
+        return !pullToRefreshView.isHidden
     }
     
     public func addPullToRefreshHandler(_ actionHandler: @escaping ActionHandler){
         if pullToRefreshView == nil {
-            pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -ICSPullToRefreshViewHeight, width: self.bounds.width, height: ICSPullToRefreshViewHeight))
+            pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -Constants.pullToRefreshViewHeight, width: self.bounds.width, height: Constants.pullToRefreshViewHeight))
             addSubview(pullToRefreshView!)
             pullToRefreshView?.autoresizingMask = .flexibleWidth
             pullToRefreshView?.scrollViewOriginContentTopInset = contentInset.top
@@ -50,11 +58,11 @@ public extension UIScrollView{
     }
     
     public func setShowsPullToRefresh(_ showsPullToRefresh: Bool) {
-        if pullToRefreshView == nil {
+        guard let pullToRefreshView = pullToRefreshView else {
             return
         }
-        pullToRefreshView!.isHidden = !showsPullToRefresh
-        if showsPullToRefresh{
+        pullToRefreshView.isHidden = !showsPullToRefresh
+        if showsPullToRefresh {
             addPullToRefreshObservers()
         }else{
             removePullToRefreshObservers()
@@ -62,22 +70,22 @@ public extension UIScrollView{
     }
     
     func addPullToRefreshObservers() {
-        if pullToRefreshView?.isObserving != nil && !pullToRefreshView!.isObserving{
-            addObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset, options:.new, context: nil)
-            addObserver(pullToRefreshView!, forKeyPath: observeKeyFrame, options:.new, context: nil)
-            pullToRefreshView!.isObserving = true
+        guard let pullToRefreshView = pullToRefreshView, !pullToRefreshView.isObserving else {
+            return
         }
+        addObserver(pullToRefreshView, forKeyPath: Constants.observeKeyContentOffset, options:.new, context: nil)
+        addObserver(pullToRefreshView, forKeyPath: Constants.observeKeyFrame, options:.new, context: nil)
+        pullToRefreshView.isObserving = true
     }
     
     func removePullToRefreshObservers() {
-        if pullToRefreshView?.isObserving != nil && pullToRefreshView!.isObserving{
-            removeObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset)
-            removeObserver(pullToRefreshView!, forKeyPath: observeKeyFrame)
-            pullToRefreshView!.isObserving = false
+        guard let pullToRefreshView = pullToRefreshView, pullToRefreshView.isObserving else {
+            return
         }
+        removeObserver(pullToRefreshView, forKeyPath: Constants.observeKeyContentOffset)
+        removeObserver(pullToRefreshView, forKeyPath: Constants.observeKeyFrame)
+        pullToRefreshView.isObserving = false
     }
-
-    
 }
 
 open class PullToRefreshView: UIView {
@@ -141,9 +149,12 @@ open class PullToRefreshView: UIView {
         }
 
         animate {
-            self.scrollView?.setContentOffset(CGPoint(
-                x: self.scrollView!.contentOffset.x,
-                y: -(self.scrollView!.contentInset.top + self.bounds.height)
+            guard let scrollView = self.scrollView else {
+                return
+            }
+            scrollView.setContentOffset(CGPoint(
+                x: scrollView.contentOffset.x,
+                y: -(scrollView.contentInset.top + self.bounds.height)
             ), animated: false)
         }
 
@@ -155,35 +166,39 @@ open class PullToRefreshView: UIView {
         state = .stopped
         if triggeredByUser {
             animate {
-                self.scrollView?.setContentOffset(CGPoint(
-                    x: self.scrollView!.contentOffset.x,
-                    y: -self.scrollView!.contentInset.top
+                guard let scrollView = self.scrollView else {
+                    return
+                }
+                scrollView.setContentOffset(CGPoint(
+                    x: scrollView.contentOffset.x,
+                    y: -scrollView.contentInset.top
                 ), animated: false)
             }
         }
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == observeKeyContentOffset {
+        if keyPath == Constants.observeKeyContentOffset {
             srollViewDidScroll((change?[NSKeyValueChangeKey.newKey] as AnyObject).cgPointValue)
-        } else if keyPath == observeKeyFrame {
+        } else if keyPath == Constants.observeKeyFrame {
             setNeedsLayout()
         }
     }
     
     fileprivate func srollViewDidScroll(_ contentOffset: CGPoint?) {
-        if scrollView == nil || contentOffset == nil{
+        guard let scrollView = scrollView, let contentOffset = contentOffset else {
             return
         }
-        if state != .loading {
-            let scrollOffsetThreshold = frame.origin.y - scrollViewOriginContentTopInset
-            if !scrollView!.isDragging && state == .triggered {
-                state = .loading
-            } else if contentOffset!.y < scrollOffsetThreshold && scrollView!.isDragging && state == .stopped {
-                state = .triggered
-            } else if contentOffset!.y >= scrollOffsetThreshold && state != .stopped {
-                state == .stopped
-            }
+        guard state != .loading else {
+            return
+        }
+        let scrollOffsetThreshold = frame.origin.y - scrollViewOriginContentTopInset
+        if !scrollView.isDragging && state == .triggered {
+            state = .loading
+        } else if contentOffset.y < scrollOffsetThreshold && scrollView.isDragging && state == .stopped {
+            state = .triggered
+        } else if contentOffset.y >= scrollOffsetThreshold && state != .stopped {
+            state = .stopped
         }
     }
     
@@ -194,20 +209,20 @@ open class PullToRefreshView: UIView {
     }
     
     fileprivate func resetScrollViewContentInset() {
-        if scrollView == nil {
+        guard let scrollView = scrollView else {
             return
         }
-        var currentInset = scrollView!.contentInset
+        var currentInset = scrollView.contentInset
         currentInset.top = scrollViewOriginContentTopInset
         setScrollViewContentInset(currentInset)
     }
     
     fileprivate func setScrollViewContentInsetForLoading() {
-        if scrollView == nil {
+        guard let scrollView = scrollView else {
             return
         }
-        let offset = max(scrollView!.contentOffset.y * -1, 0)
-        var currentInset = scrollView!.contentInset
+        let offset = max(scrollView.contentOffset.y * -1, 0)
+        var currentInset = scrollView.contentInset
         currentInset.top = min(offset, scrollViewOriginContentTopInset + bounds.height)
         setScrollViewContentInset(currentInset)
     }
@@ -224,7 +239,7 @@ open class PullToRefreshView: UIView {
 
     open override func layoutSubviews() {
         super.layoutSubviews()
-        defaultView.frame = self.bounds
+        defaultView.frame = bounds
         activityIndicator.center = defaultView.center
         switch state {
         case .stopped:
@@ -237,11 +252,10 @@ open class PullToRefreshView: UIView {
     }
     
     open override func willMove(toSuperview newSuperview: UIView?) {
-        if superview != nil && newSuperview == nil {
-            if scrollView?.showsPullToRefresh != nil && scrollView!.showsPullToRefresh{
-                scrollView?.removePullToRefreshObservers()
-            }
+        guard newSuperview == nil, let _ = superview, let showsPullToRefresh = scrollView?.showsPullToRefresh, showsPullToRefresh else {
+            return
         }
+        scrollView?.removePullToRefreshObservers()
     }
     
     // MARK: Basic Views
