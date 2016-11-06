@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ICSPullToRefresh"
-  s.version      = "0.5"
+  s.version      = "0.6"
   s.summary      = "Swift PullToRefresh && InfiniteScrolling"
   s.homepage     = "https://github.com/iCodesign/ICSPullToRefresh-Swift"
   s.license      = "MIT"
