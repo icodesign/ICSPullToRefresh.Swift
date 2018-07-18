@@ -27,12 +27,12 @@ class ViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.addPullToRefreshHandler {
+        tableView.addPullToRefreshHandler { [weak self] in
             DispatchQueue.global(qos: .userInitiated).async{
                 sleep(3)
-                self.k = 0;
-                DispatchQueue.main.async { [unowned self] in
-                    self.tableView.pullToRefreshView?.stopAnimating()
+                self?.k = 0;
+                DispatchQueue.main.async {
+                    self?.tableView.pullToRefreshView?.stopAnimating()
                 }
             }
         }
@@ -40,14 +40,14 @@ class ViewController: UITableViewController {
             self.tableView.triggerPullToRefresh()
         }
         
-        tableView.addInfiniteScrollingWithHandler {
+        tableView.addInfiniteScrollingWithHandler { [weak self] in
             DispatchQueue.global(qos: .userInitiated).async {
                 sleep(3)
-                DispatchQueue.main.async { [unowned self] in
+                DispatchQueue.main.async {
                     
-                    self.k += 1
-                    self.tableView.reloadData()
-                    self.tableView.infiniteScrollingView?.stopAnimating()
+                    self?.k += 1
+                    self?.tableView.reloadData()
+                    self?.tableView.infiniteScrollingView?.stopAnimating()
                 }
             }
         }
