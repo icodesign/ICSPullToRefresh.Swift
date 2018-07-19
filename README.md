@@ -65,10 +65,10 @@ Example:
 
 ```
 tableView.addPullToRefreshHandler {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [weak self] () -> Void in
         // do something in the background
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.tableView.pullToRefreshView?.stopAnimating()
+            self?.tableView.pullToRefreshView?.stopAnimating()
         })
     })
 }
@@ -105,11 +105,11 @@ Example:
 
 ```
 tableView.addInfiniteScrollingWithActionHandler {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [weak self] () -> Void in
         // do something in the background
         dispatch_async(dispatch_get_main_queue(), { [unowned self] in
-            self.tableView.reloadData()
-            self.tableView.infiniteScrollingView?.stopAnimating()
+            self?.tableView.reloadData()
+            self?.tableView.infiniteScrollingView?.stopAnimating()
         })
     })
 }
