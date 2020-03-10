@@ -22,7 +22,7 @@ fileprivate struct Constants {
 
 public extension UIScrollView{
     
-    public var infiniteScrollingView: InfiniteScrollingView? {
+    var infiniteScrollingView: InfiniteScrollingView? {
         get {
             return objc_getAssociatedObject(self, &infiniteScrollingViewKey) as? InfiniteScrollingView
         }
@@ -33,14 +33,14 @@ public extension UIScrollView{
         }
     }
     
-    public var showsInfiniteScrolling: Bool {
+    var showsInfiniteScrolling: Bool {
         guard let infiniteScrollingView = infiniteScrollingView else {
             return false
         }
         return !infiniteScrollingView.isHidden
     }
     
-    public func addInfiniteScrollingWithHandler(_ actionHandler: @escaping ActionHandler){
+    func addInfiniteScrollingWithHandler(_ actionHandler: @escaping ActionHandler){
         if infiniteScrollingView == nil {
             infiniteScrollingView = InfiniteScrollingView(frame: CGRect(x: CGFloat(0), y: contentSize.height, width: bounds.width, height: Constants.infiniteScrollingViewHeight))
             addSubview(infiniteScrollingView!)
@@ -51,12 +51,12 @@ public extension UIScrollView{
         setShowsInfiniteScrolling(true)
     }
     
-    public func triggerInfiniteScrolling() {
+    func triggerInfiniteScrolling() {
         infiniteScrollingView?.state = .triggered
         infiniteScrollingView?.startAnimating()
     }
     
-    public func setShowsInfiniteScrolling(_ showsInfiniteScrolling: Bool) {
+    func setShowsInfiniteScrolling(_ showsInfiniteScrolling: Bool) {
         guard let infiniteScrollingView = infiniteScrollingView else {
             return
         }
@@ -248,7 +248,7 @@ open class InfiniteScrollingView: UIView {
     }()
     
     fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
     }()
@@ -257,8 +257,8 @@ open class InfiniteScrollingView: UIView {
         activityIndicator.color = color
     }
 
-    open func setActivityIndicatorStyle(_ style: UIActivityIndicatorViewStyle) {
-        activityIndicator.activityIndicatorViewStyle = style
+    open func setActivityIndicatorStyle(_ style: UIActivityIndicatorView.Style) {
+        activityIndicator.style = style
     }
     
 }

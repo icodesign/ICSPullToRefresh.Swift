@@ -23,7 +23,7 @@ fileprivate struct Constants {
 
 public extension UIScrollView{
     
-    public var pullToRefreshView: PullToRefreshView? {
+    var pullToRefreshView: PullToRefreshView? {
         get {
             return objc_getAssociatedObject(self, &pullToRefreshViewKey) as? PullToRefreshView
         }
@@ -34,14 +34,14 @@ public extension UIScrollView{
         }
     }
     
-    public var showsPullToRefresh: Bool {
+    var showsPullToRefresh: Bool {
         guard let pullToRefreshView = pullToRefreshView else {
             return false
         }
         return !pullToRefreshView.isHidden
     }
     
-    public func addPullToRefreshHandler(_ actionHandler: @escaping ActionHandler){
+    func addPullToRefreshHandler(_ actionHandler: @escaping ActionHandler){
         if pullToRefreshView == nil {
             pullToRefreshView = PullToRefreshView(frame: CGRect(x: CGFloat(0), y: -Constants.pullToRefreshViewHeight, width: self.bounds.width, height: Constants.pullToRefreshViewHeight))
             addSubview(pullToRefreshView!)
@@ -52,12 +52,12 @@ public extension UIScrollView{
         setShowsPullToRefresh(true)
     }
     
-    public func triggerPullToRefresh() {
+    func triggerPullToRefresh() {
         pullToRefreshView?.state = .triggered
         pullToRefreshView?.startAnimating()
     }
     
-    public func setShowsPullToRefresh(_ showsPullToRefresh: Bool) {
+    func setShowsPullToRefresh(_ showsPullToRefresh: Bool) {
         guard let pullToRefreshView = pullToRefreshView else {
             return
         }
@@ -271,7 +271,7 @@ open class PullToRefreshView: UIView {
     }()
     
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
         activityIndicator.hidesWhenStopped = false
         return activityIndicator
     }()
@@ -280,8 +280,8 @@ open class PullToRefreshView: UIView {
         activityIndicator.color = color
     }
 
-    open func setActivityIndicatorStyle(_ style: UIActivityIndicatorViewStyle) {
-        activityIndicator.activityIndicatorViewStyle = style
+    open func setActivityIndicatorStyle(_ style: UIActivityIndicatorView.Style) {
+        activityIndicator.style = style
     }
     
 }
